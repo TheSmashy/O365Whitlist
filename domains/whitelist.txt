@@ -7,6 +7,8 @@ r1.res.office365.com
 r3.res.office365.com
 r4.res.office365.com
 *.outlook.com
+*.outlook.office.com
+attachments.office.net
 *.protection.outlook.com
 *.mail.protection.outlook.com
 storage.live.com
