@@ -14,9 +14,9 @@ This has been tested on version 5 of PiHole, it really relies on the database to
 ##Installation
 You should have python3 installed, if you don't get it.
 **To install the O365 Whitelist**
-    git clone https://github.com/TheSmashy/O365Whitlist.git
-    sudo python3 O365Whitlist/scripts/whitelist.py
+    ```git clone https://github.com/TheSmashy/O365Whitlist.git
+    ```sudo python3 O365Whitlist/scripts/whitelist.py
 
 **Uninstall**
-   sudo python3 O365Whitlist/scripts/uninstall.py
+   ```sudo python3 O365Whitlist/scripts/uninstall.py
    
