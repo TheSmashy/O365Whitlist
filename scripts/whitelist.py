@@ -70,7 +70,7 @@ else:
     pihole_location = r'/etc/pihole'
 
 whitelist_remote_url = 'https://raw.githubusercontent.com/TheSmashy/O365Whitlist/main/domains/whitelist.txt'
-remote_sql_url = 'https://raw.githubusercontent.com/anudeepND/whitelist/master/scripts/domains.sql'
+remote_sql_url = 'https://raw.githubusercontent.com/TheSmashy/O365Whitlist/main/scripts/domains.sql'
 gravity_whitelist_location = os.path.join(pihole_location, 'whitelist.txt')
 gravity_db_location = os.path.join(pihole_location, 'gravity.db')
 smashy_whitelist_location = os.path.join(pihole_location, 'o365-whitelist.txt')
