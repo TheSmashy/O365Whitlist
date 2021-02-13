@@ -12,11 +12,13 @@ Most of this project is based off the work of Anudeep, visit his page and give h
 This has been tested on version 5 of PiHole, it really relies on the database to make regex entries.  There is a text whitelist, but I have no idea if it'll work.  I haven't test this with docker, so I'll do that later and add support.
 
 ## Installation
-You should have python3 installed, if you don't get it.
+You should have python3 installed, if you don't get it.  
+
 **To install the O365 Whitelist**
 
     git clone https://github.com/TheSmashy/O365Whitlist.git  
     sudo python3 O365Whitlist/scripts/whitelist.py  
 
-**Uninstall**
+**Uninstall**  
+
     sudo python3 O365Whitlist/scripts/uninstall.py  
