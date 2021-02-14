@@ -22,3 +22,6 @@ You should have python3 installed.  If you don't, go get it.
 **Uninstall**  
 
     sudo python3 O365Whitlist/scripts/uninstall.py  
+    
+**Note**  
+You should backup your gravity database before manipulating it with a script.  If you want to manually add these domains to your whitelists, there are two files you can use in the **Manual** folder; ExactDomains.txt - Exact domain matches and RegexDomains.txt - Regex domain, paste them into domain field under Whitelist management and check the box for "Add domain as wildcard".  If you want to use the script, backup your gravity database via ```sudo cp /etc/pihole/gravity.db /etc/pihole/gravity.bak``` and then procede with the installation.  See [here](https://github.com/pi-hole/pi-hole/issues/3860) for an issue related to scripts corrupting the gravity database.
