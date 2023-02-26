@@ -154,7 +154,7 @@ if db_exists:
         #
         print('[i] Checking Gravity for domains added by script.')
         # Check Gravity database for domains added by script
-        gravityScript_before = cursor.execute(" SELECT * FROM domainlist WHERE type = 0 AND comment LIKE '%qjz9zk%' ")
+        gravityScript_before = cursor.execute(" SELECT * FROM domainlist WHERE type = 0 AND comment LIKE '%h5pYKA%' ")
         # fetch all matching entries which will create a tuple for us
         gravScriptBeforeTUP = gravityScript_before.fetchall()
         # Number of domains in database from script
@@ -185,7 +185,7 @@ if db_exists:
         # check database for user added exact whitelisted domains
         print('[i] Checking Gravity for domains added by user that are also in script.')
         # Check Gravity database for exact whitelisted domains added by user
-        user_add = cursor.execute(" SELECT * FROM domainlist WHERE type = 0 AND comment NOT LIKE '%qjz9zk%' ")
+        user_add = cursor.execute(" SELECT * FROM domainlist WHERE type = 0 AND comment NOT LIKE '%h5pYKA%' ")
         userAddTUP = user_add.fetchall()
         userAddTUPlen = len(userAddTUP)
         #
@@ -288,7 +288,7 @@ if db_exists:
                         cursor.executescript(sql_add)
                         w -= 1
             # Re-Check Gravity database for domains added by script after we update it
-            gravityScript_after = cursor.execute(" SELECT * FROM domainlist WHERE type = 0 AND comment LIKE '%qjz9zk%' ")
+            gravityScript_after = cursor.execute(" SELECT * FROM domainlist WHERE type = 0 AND comment LIKE '%h5pYKA%' ")
             # fetch all matching entries which will create a tuple for us
             gravScriptAfterTUP = gravityScript_after.fetchall()
             # Number of domains in database from script
