@@ -93,3 +93,4 @@ portal.office.com
 www.office.com
 suite.office.net
 mlccdn.blob.core.windows.net
+*.aria.microsoft.com
