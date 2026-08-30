@@ -154,7 +154,7 @@ if db_exists:
         #
         print('[i] Checking Gravity for domains added by script.')
         # Check Gravity database for domains added by script
-        gravityScript_before = cursor.execute(" SELECT * FROM domainlist WHERE type = 0 AND comment LIKE '%h5pYKA%' ")
+        gravityScript_before = cursor.execute(" SELECT * FROM domainlist WHERE comment LIKE '%h5pYKA%' ")
         # fetch all matching entries which will create a tuple for us
         gravScriptBeforeTUP = gravityScript_before.fetchall()
         # Number of domains in database from script
@@ -185,7 +185,7 @@ if db_exists:
         # check database for user added exact whitelisted domains
         print('[i] Checking Gravity for domains added by user that are also in script.')
         # Check Gravity database for exact whitelisted domains added by user
-        user_add = cursor.execute(" SELECT * FROM domainlist WHERE type = 0 AND comment NOT LIKE '%h5pYKA%' ")
+        user_add = cursor.execute(" SELECT * FROM domainlist WHERE comment NOT LIKE '%h5pYKA%' ")
         userAddTUP = user_add.fetchall()
         userAddTUPlen = len(userAddTUP)
         #
@@ -245,7 +245,7 @@ if db_exists:
                 # print all data retrieved from database about domain to be removed
                 # print (INgravityNOTnewList[z])
                 # ability to remove old
-                sql_delete = " DELETE FROM domainlist WHERE type = 0 AND id = '{}' "  .format(INgravityNOTnewList[z][0])
+                sql_delete = " DELETE FROM domainlist WHERE id = '{}' "  .format(INgravityNOTnewList[z][0])
                 cursor.executescript(sql_delete)
                 z -= 1
         # If not keep going
@@ -288,7 +288,7 @@ if db_exists:
                         cursor.executescript(sql_add)
                         w -= 1
             # Re-Check Gravity database for domains added by script after we update it
-            gravityScript_after = cursor.execute(" SELECT * FROM domainlist WHERE type = 0 AND comment LIKE '%h5pYKA%' ")
+            gravityScript_after = cursor.execute(" SELECT * FROM domainlist WHERE comment LIKE '%h5pYKA%' ")
             # fetch all matching entries which will create a tuple for us
             gravScriptAfterTUP = gravityScript_after.fetchall()
             # Number of domains in database from script
@@ -336,15 +336,20 @@ if db_exists:
             restart_pihole(args.docker)
 
     except sqlite3.Error as error:
+        if sqliteConnection:
+            sqliteConnection.rollback()
         print('[X] Failed to insert domains into Gravity database', error)
         print('\n')
         print('\n')
         exit(1)
 
     finally:
-        print('\n')
-        print('Done. Happy ad-blocking')
-        print('\n')
+        if sqliteConnection:
+            sqliteConnection.close()
+
+    print('\n')
+    print('Done. Happy ad-blocking')
+    print('\n')
 
 else:
 
