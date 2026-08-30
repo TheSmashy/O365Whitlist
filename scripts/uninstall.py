@@ -110,9 +110,6 @@ else:
 # Check for write access to /etc/pihole
 if os.access(pihole_location, os.X_OK | os.W_OK):
     print("[i] Write access to {} verified" .format(pihole_location))
-    whitelist_str = fetch_whitelist_url(whitelist_remote_url)
-    remote_whitelist_lines = whitelist_str.count('\n')
-    remote_whitelist_lines += 1
 else:
     print("[X] Write access is not available for {}. Please run as root or other privileged user" .format(
         pihole_location))
@@ -125,28 +122,18 @@ if os.path.isfile(gravity_db_location) and os.path.getsize(gravity_db_location) 
     db_exists = True
     print('[i] Pi-Hole Gravity database found')
 
-    remote_sql_str = fetch_whitelist_url(remote_sql_url)
-    remote_sql_lines = remote_sql_str.count('\n')
-    remote_sql_lines += 1
+else:
+    print('[i] Legacy Pi-hole detected (Version older than 5.0)')
+    whitelist_str = fetch_whitelist_url(whitelist_remote_url)
 
-    if len(remote_sql_str) > 0:
-        print("[i] {} domains discovered" .format(remote_whitelist_lines))
+    if whitelist_str:
+        whitelist_remote.update(x for x in map(
+            str.strip, whitelist_str.splitlines()) if x and x[:1] != '#')
     else:
-        print('[X] No remote SQL queries found')
+        print('[X] No remote domains were found.')
         print('\n')
         print('\n')
         exit(1)
-else:
-    print('[i] Legacy Pi-hole detected (Version older than 5.0)')
-
-if whitelist_str:
-    whitelist_remote.update(x for x in map(
-        str.strip, whitelist_str.splitlines()) if x and x[:1] != '#')
-else:
-    print('[X] No remote domains were found.')
-    print('\n')
-    print('\n')
-    exit(1)
 
 if db_exists:
     # Create a DB connection
@@ -156,12 +143,12 @@ if db_exists:
         sqliteConnection = sqlite3.connect(gravity_db_location)
         cursor = sqliteConnection.cursor()
         print('[i] Successfully Connected to Gravity database')
-        total_domains = cursor.execute(" SELECT * FROM domainlist WHERE type = 0 AND comment LIKE '%h5pYKA%' ")
+        total_domains = cursor.execute(" SELECT * FROM domainlist WHERE comment LIKE '%h5pYKA%' ")
         
         totalDomains = len(total_domains.fetchall())
         print("[i] There are a total of {} domains in your whitelist which are added by my script" .format(totalDomains))
         print('[i] Removing domains in the Gravity database')
-        cursor.execute (" DELETE FROM domainlist WHERE type = 0 AND comment LIKE '%h5pYKA%' ")
+        cursor.execute(" DELETE FROM domainlist WHERE comment LIKE '%h5pYKA%' ")
 
         sqliteConnection.commit()
 
@@ -173,22 +160,23 @@ if db_exists:
         cursor.close()
 
     except sqlite3.Error as error:
+        if sqliteConnection:
+            sqliteConnection.rollback()
         print('[X] Failed to remove domains from Gravity database', error)
         print('\n')
         print('\n')
         exit(1)
 
     finally:
-        if (sqliteConnection):
+        if sqliteConnection:
             sqliteConnection.close()
-
             print('[i] The database connection is closed')
 
-            print('[i] Restarting Pi-hole. This could take a few seconds')
-            restart_pihole(args.docker)
-            print('\n')
-            print('Done. Happy ad-blocking :)')
-            print('\n')
+    print('[i] Restarting Pi-hole. This could take a few seconds')
+    restart_pihole(args.docker)
+    print('\n')
+    print('Done. Happy ad-blocking :)')
+    print('\n')
 
 else:
     if os.path.isfile(gravity_whitelist_location) and os.path.getsize(gravity_whitelist_location) > 0:
